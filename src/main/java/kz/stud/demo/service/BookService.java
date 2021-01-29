@@ -3,6 +3,7 @@ package kz.stud.demo.service;
 import kz.stud.demo.model.Book;
 import kz.stud.demo.repository.BookRepository;
 import kz.stud.demo.service.interfaces.IBookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class BookService implements IBookService {
 
     private final BookRepository bookRepository;
 
-
+    @Autowired
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
@@ -29,16 +30,19 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public void addBook(Book book) {
-        bookRepository.save(book);
+    public Book addBook(Book book) throws Exception{
+        if(bookRepository.findById(book.getIsbn()).isPresent()){
+            throw new Exception("Book with this isbn already exists");
+        }
+        return bookRepository.save(book);
     }
 
     @Override
-    public void updateBook(Book book) throws Exception {
-        if(!bookRepository.existsById(book.getIsbn())){
+    public Book updateBook(Book book) throws Exception {
+        if(!bookRepository.findById(book.getIsbn()).isPresent()){
             throw new Exception("Book doesn't exist!");
         }
-        bookRepository.save(book);
+       return bookRepository.save(book);
     }
 
     @Override

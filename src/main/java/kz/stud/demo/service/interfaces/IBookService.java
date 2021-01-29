@@ -8,8 +8,8 @@ public interface IBookService {
 
     Book getBookById(Long id);
     List<Book> getBooks();
-    void addBook(Book book);
-    void updateBook(Book book) throws Exception;
+    Book addBook(Book book) throws Exception;
+    Book updateBook(Book book) throws Exception;
     void removeBook(Long id);
 
 }

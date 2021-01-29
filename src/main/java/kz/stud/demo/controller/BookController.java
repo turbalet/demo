@@ -2,6 +2,7 @@ package kz.stud.demo.controller;
 
 import kz.stud.demo.model.Book;
 import kz.stud.demo.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ public class BookController {
 
     private final BookService bookService;
 
+    @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
@@ -26,28 +28,30 @@ public class BookController {
 
     @GetMapping("/{id}")
     public Book bookById(@PathVariable("id") Long id){
+
         return bookService.getBookById(id);
+
     }
 
     @PostMapping
-    public ResponseEntity<?> addBook(Book book){
+    public ResponseEntity<?> addBook(@RequestBody Book book){
         try {
             bookService.addBook(book);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(book, HttpStatus.OK);
+        return ResponseEntity.ok(book);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateBook(Book book){
+    public ResponseEntity<?> updateBook(@RequestBody Book book){
 
         try {
             bookService.updateBook(book);
         } catch (Exception e){
             return ResponseEntity.status(400).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body("Book was updated");
+        return ResponseEntity.ok(book);
     }
 
     @DeleteMapping("/{id}")
