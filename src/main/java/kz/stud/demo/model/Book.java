@@ -2,7 +2,6 @@ package kz.stud.demo.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,7 +10,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@Document(collection = "Book")
+@Document(collection = "books")
 public class Book {
 
     @Id

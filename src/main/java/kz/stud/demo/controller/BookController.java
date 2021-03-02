@@ -5,6 +5,7 @@ import kz.stud.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class BookController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addBook(@RequestBody Book book){
         try {
             bookService.addBook(book);
@@ -43,7 +45,8 @@ public class BookController {
         return ResponseEntity.ok(book);
     }
 
-    @PutMapping
+    @PutMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateBook(@RequestBody Book book){
 
         try {
@@ -54,7 +57,8 @@ public class BookController {
         return ResponseEntity.ok(book);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> removeBook(@PathVariable("id") Long id){
         try {
             bookService.removeBook(id);
